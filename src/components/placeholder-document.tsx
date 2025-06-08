@@ -14,7 +14,7 @@ export function PlaceholderDocument() {
   return (
     <Button
       onClick={handleClick}
-      className="flex flex-col items-center w-64 h-80 rounded-xl drop-shadow-md"
+      className="flex flex-col bg-primary/20 items-center w-64 h-80 rounded-xl drop-shadow-md"
     >
       <PlusCircleIcon className="size-14" />
       <p>Add a document</p>

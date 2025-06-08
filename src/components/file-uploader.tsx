@@ -33,7 +33,7 @@ export function FileUploader() {
       // do nothing
       // toast
     }
-  }, []);
+  }, [handleUpload]);
 
   const { getRootProps, getInputProps, isFocused, isDragAccept, isDragActive } =
     useDropzone({
@@ -60,6 +60,7 @@ export function FileUploader() {
       {isUploading && (
         <div className="mt-32 flex flex-col justify-center items-center gap-5">
           <p className={cn(progress === 100 && "hidden")}>{progress} %</p>
+          {status && statusIcons[status as StatusText]}
           <Progress value={progress} className="w-full" />
           {status ? (
             <p className="text-sm text-muted-foreground">{String(status)}</p>

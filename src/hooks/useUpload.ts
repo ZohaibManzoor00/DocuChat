@@ -1,6 +1,6 @@
 "use client";
 import { useUser } from "@clerk/nextjs";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { db, storage } from "../../firebase";
@@ -22,7 +22,7 @@ export const useUpload = () => {
   const [fileId, setFileId] = useState<string | null>(null);
   const [status, setStatus] = useState<Status | null>(null);
   const { user } = useUser();
-  const router = useRouter();
+  // const router = useRouter();
 
   const handleUpload = async (file: File) => {
     if (!user || !file) return;
