@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from "uuid";
 import { db, storage } from "../../firebase";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { doc, setDoc } from "firebase/firestore";
+import { generateEmbeddings } from "@/actions/generate-embeddings";
 
 export enum StatusText {
   UPLOADING = "Uploading...",
@@ -64,7 +65,7 @@ export const useUpload = () => {
 
         setStatus(StatusText.GENERATING);
 
-        // generate embeddings
+        await generateEmbeddings(fileIdToUploadTo);
 
         setFileId(fileIdToUploadTo);
       }
