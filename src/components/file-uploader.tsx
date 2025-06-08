@@ -1,18 +1,40 @@
 "use client";
 
-import { cn } from "@/lib/utils";
-import { CircleArrowDown, RocketIcon } from "lucide-react";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 
+import { useUpload } from "@/hooks/useUpload";
+import { CircleArrowDown, RocketIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { useRouter } from "next/navigation";
+
 export function FileUploader() {
-  const onDrop = useCallback((acceptedFiles: File[]) => {
-    console.log(acceptedFiles);
+  const { progress, status, fileId, handleUpload } = useUpload();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (fileId) {
+      router.push(`/dashboard/files/${fileId}`);
+    }
+  }, [fileId, router]);
+
+  const onDrop = useCallback(async (acceptedFiles: File[]) => {
+    const file = acceptedFiles[0];
+    if (file) {
+      await handleUpload(file);
+    } else {
+      // do nothing
+      // toast
+    }
   }, []);
 
   const { getRootProps, getInputProps, isFocused, isDragAccept, isDragActive } =
     useDropzone({
       onDrop,
+      maxFiles: 1,
+      accept: {
+        "application/pdf": [".pdf"],
+      },
     });
 
   return (
@@ -26,18 +48,17 @@ export function FileUploader() {
       >
         <input {...getInputProps()} />
         <div className="flex flex-col items-center justify-center gap-4">
-
-        {isDragActive ? (
-          <>
-            <RocketIcon className="h-20 w-20 animate-ping" />
-            <p>Drop files here ...</p>
-          </>
-        ) : (
-          <>
-            <CircleArrowDown className="h-20 w-20" />
-            <p>{`Drag 'n' drop some files here, or click to select files`}</p>
-          </>
-        )}
+          {isDragActive ? (
+            <>
+              <RocketIcon className="h-20 w-20 animate-ping" />
+              <p>Drop files here ...</p>
+            </>
+          ) : (
+            <>
+              <CircleArrowDown className="h-20 w-20" />
+              <p>{`Drag 'n' drop some files here, or click to select files`}</p>
+            </>
+          )}
         </div>
       </div>
     </div>
