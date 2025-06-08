@@ -10,7 +10,7 @@ export function FileUploader() {
     console.log(acceptedFiles);
   }, []);
 
-  const { getRootProps, getInputProps, open, isFocused, isDragAccept, isDragActive } =
+  const { getRootProps, getInputProps, isFocused, isDragAccept, isDragActive } =
     useDropzone({
       onDrop,
     });
@@ -35,7 +35,7 @@ export function FileUploader() {
         ) : (
           <>
             <CircleArrowDown className="h-20 w-20" />
-            <p>Drag 'n' drop some files here, or click to select files</p>
+            <p>{`Drag 'n' drop some files here, or click to select files`}</p>
           </>
         )}
         </div>
