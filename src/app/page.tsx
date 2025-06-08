@@ -1,9 +1,34 @@
+import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
+import { Slider } from "@/components/ui/slider";
+import { Separator } from "@/components/ui/separator";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
+import { ThemeSwitcher } from "@/components/theme-switcher";
 import Image from "next/image";
 
 export default function Home() {
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
+      <div className="absolute top-4 right-4">
+        <ThemeSwitcher />
+      </div>
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
+        <h1 className="text-4xl font-bold">Hello world</h1>
+        <p className="text-lg">
+          This is a simple example of a button component.
+        </p>
         <Image
           className="dark:invert"
           src="/next.svg"
@@ -26,11 +51,11 @@ export default function Home() {
         </ol>
 
         <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+          <Button
+          // className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
+          // href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
+          // target="_blank"
+          // rel="noopener noreferrer"
           >
             <Image
               className="dark:invert"
@@ -40,15 +65,49 @@ export default function Home() {
               height={20}
             />
             Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+          </Button>
+          <Button
+            variant="outline"
+            // className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
+            // href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
+            // target="_blank"
+            // rel="noopener noreferrer"
           >
             Read our docs
-          </a>
+          </Button>
+        </div>
+
+        <Separator className="my-4" />
+
+        <div className="space-y-8 w-full max-w-md">
+          <Progress value={60} className="w-full" />
+
+          <Slider defaultValue={[33]} max={100} step={1} className="w-full" />
+
+          <div className="flex gap-4">
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="outline">Open Sheet</Button>
+              </SheetTrigger>
+              <SheetContent>
+                <SheetHeader>
+                  <SheetTitle>Sheet Title</SheetTitle>
+                  <SheetDescription>
+                    This is a sheet component from shadcn/ui.
+                  </SheetDescription>
+                </SheetHeader>
+              </SheetContent>
+            </Sheet>
+
+            <HoverCard>
+              <HoverCardTrigger asChild>
+                <Button variant="ghost">Hover me</Button>
+              </HoverCardTrigger>
+              <HoverCardContent>
+                This is a hover card component.
+              </HoverCardContent>
+            </HoverCard>
+          </div>
         </div>
       </main>
       <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
@@ -97,6 +156,13 @@ export default function Home() {
           />
           Go to nextjs.org →
         </a>
+        <div className="flex gap-2">
+          <Button>Click me</Button>
+          <Button variant="outline">Click me</Button>
+          <Button variant="secondary">Click me</Button>
+          <Button variant="ghost">Click me</Button>
+          <Button variant="link">Click me</Button>
+        </div>
       </footer>
     </div>
   );
