@@ -1,9 +1,9 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { Send } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { Send } from "lucide-react"
 
 export default function TypingPromptInput() {
   const prompts = [

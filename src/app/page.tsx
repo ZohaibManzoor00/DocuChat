@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import { Button } from "@/components/ui/button";
 import CssGridBackground from "@/components/css-grid-background";
 import FramerSpotlight from "@/components/framer-spotlight";
@@ -5,7 +7,6 @@ import TypingPromptInput from "@/components/typing-prompt-input";
 import { Brain, Zap } from "lucide-react";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
-import Link from "next/link";
 
 export default function Home() {
   return (

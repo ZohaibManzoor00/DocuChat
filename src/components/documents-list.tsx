@@ -1,6 +1,6 @@
 import { auth } from "@clerk/nextjs/server";
-import { PlaceholderDocument } from "./placeholder-document";
 import { adminDb } from "../../firebaseAdmin";
+import { PlaceholderDocument } from "./placeholder-document";
 import { Document } from "./document";
 
 export async function DocumentsList() {

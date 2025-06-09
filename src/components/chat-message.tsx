@@ -1,6 +1,7 @@
 import { useUser } from "@clerk/nextjs";
-import { Message } from "./chat-view";
 import { BotIcon, Loader2Icon, UserIcon } from "lucide-react";
+
+import { Message } from "./chat-view";
 import Markdown from "react-markdown";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { cn } from "@/lib/utils";

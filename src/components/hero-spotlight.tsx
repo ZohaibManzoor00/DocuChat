@@ -10,7 +10,6 @@ export default function HeroSpotlight() {
     setIsMounted(true)
 
     const handleMouseMove = (e: MouseEvent) => {
-      // Only update position occasionally to improve performance
       if (Math.random() > 0.92) {
         setMousePosition({ x: e.clientX, y: e.clientY })
       }
@@ -18,7 +17,6 @@ export default function HeroSpotlight() {
 
     window.addEventListener("mousemove", handleMouseMove)
 
-    // Set initial position to center of screen
     setMousePosition({
       x: window.innerWidth / 2,
       y: window.innerHeight / 3,
@@ -35,7 +33,6 @@ export default function HeroSpotlight() {
 
   return (
     <>
-      {/* Main spotlight that follows mouse */}
       <div
         className="pointer-events-none absolute inset-0 z-[-1] opacity-70 transition-opacity duration-500"
         style={{
@@ -43,7 +40,6 @@ export default function HeroSpotlight() {
         }}
       />
 
-      {/* Static spotlights for visual interest */}
       <div
         className="pointer-events-none absolute inset-0 z-[-1] opacity-50"
         style={{
@@ -54,7 +50,6 @@ export default function HeroSpotlight() {
         }}
       />
 
-      {/* Subtle animated gradient overlay */}
       <div className="pointer-events-none absolute inset-0 z-[-1] bg-gradient-to-b from-transparent to-background/80 opacity-80" />
     </>
   )

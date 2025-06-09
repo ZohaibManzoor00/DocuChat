@@ -7,5 +7,5 @@ export default function DashboardPage() {
     <div className="h-full max-w-7xl mx-auto pt-3">
       <DocumentsList />
     </div>
-  )
+  );
 }

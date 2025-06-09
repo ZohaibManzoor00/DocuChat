@@ -1,9 +1,9 @@
-import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
-import Link from "next/link";
 import React from "react";
-import { Button } from "./ui/button";
+import Link from "next/link";
+import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import { Brain, FilePlus2, Zap } from "lucide-react";
-import { ThemeToggle } from "./theme-toggle";
+
+import { Button } from "./ui/button";
 import { ThemeSwitcher } from "./theme-switcher";
 
 export function Header() {
@@ -45,7 +45,7 @@ export function Header() {
 
       <SignedOut>
         <div className="flex items-center space-x-2">
-          <ThemeToggle />
+          <ThemeSwitcher />
           <Button asChild>
             <Link href="/dashboard">
               <Zap className="size-4" />

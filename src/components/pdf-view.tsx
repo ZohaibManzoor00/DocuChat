@@ -2,9 +2,9 @@
 
 import { useState, useEffect } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
+import { Loader2Icon, RotateCw, ZoomInIcon, ZoomOutIcon } from "lucide-react";
 import "react-pdf/dist/Page/TextLayer.css";
 import "react-pdf/dist/Page/AnnotationLayer.css";
-import { Loader2Icon, RotateCw, ZoomInIcon, ZoomOutIcon } from "lucide-react";
 import { Button } from "./ui/button";
 
 interface Props {

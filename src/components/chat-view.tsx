@@ -1,19 +1,21 @@
 "use client";
 
-import { db } from "../../firebase";
 import { useRef, useEffect, useState, useTransition } from "react";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
-import { Loader2Icon } from "lucide-react";
 import { useUser } from "@clerk/nextjs";
-import { collection, orderBy, query } from "firebase/firestore";
-import { useCollection } from "react-firebase-hooks/firestore";
-import { Form, FormControl, FormField, FormItem } from "./ui/form";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { collection, orderBy, query } from "firebase/firestore";
+import { useCollection } from "react-firebase-hooks/firestore";
+
+import { db } from "../../firebase";
 import { askQuestion } from "@/actions/ask-question";
+
+import { Input } from "./ui/input";
+import { Button } from "./ui/button";
 import { ChatMessage } from "./chat-message";
+import { Loader2Icon } from "lucide-react";
+import { Form, FormControl, FormField, FormItem } from "./ui/form";
 
 export type Message = {
   id?: string;

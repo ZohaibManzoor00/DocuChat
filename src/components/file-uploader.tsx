@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
+import { useRouter } from "next/navigation";
 
 import { StatusText, useUpload } from "@/hooks/useUpload";
 import {
@@ -12,7 +13,6 @@ import {
   Save,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useRouter } from "next/navigation";
 import { Progress } from "./ui/progress";
 
 export function FileUploader() {

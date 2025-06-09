@@ -22,9 +22,7 @@ if (!process.env.GOOGLE_API_KEY) {
   throw new Error("Missing GOOGLE_API_KEY environment variable");
 }
 
-// const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY || "");
 export const googleAIModel = new ChatGoogleGenerativeAI({
-  // model: "gemini-pro",
   model: "gemini-1.5-pro",
   apiKey: process.env.GOOGLE_API_KEY,
 });
@@ -34,7 +32,6 @@ export const openAIModel = new ChatOpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-// Create a custom embeddings class that pads Gemini's vectors
 class PaddedGeminiEmbeddings extends GoogleGenerativeAIEmbeddings {
   constructor() {
     super({
