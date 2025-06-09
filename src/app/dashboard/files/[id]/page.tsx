@@ -1,5 +1,3 @@
-// 'use client'
-
 import { auth } from "@clerk/nextjs/server";
 import { adminDb } from "../../../../../firebaseAdmin";
 import { PdfView } from "@/components/pdf-view";
@@ -38,7 +36,7 @@ export default async function ChatToFilePage({ params }: Props) {
         <ChatView id={id}/>
       </div>
 
-      <div className="col-span-5 lg:col-span-3 bg-primary/10 border-r-2 lg:border-secondary lg:-order-1 overflow-auto">
+      <div className="col-span-5 lg:col-span-3 border-r-2  lg:-order-1 overflow-auto">
         <PdfView url={url} />
       </div>
     </div>

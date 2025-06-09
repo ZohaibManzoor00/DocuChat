@@ -16,7 +16,7 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en" suppressHydrationWarning>
-        <body className="min-h-screen h-screen overflow-hidden flex flex-col">
+        <body className="min-h-screen h-screen flex flex-col">
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
