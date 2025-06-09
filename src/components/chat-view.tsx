@@ -1,12 +1,7 @@
 "use client";
 
 import { db } from "../../firebase";
-import {
-  useRef,
-  useEffect,
-  useState,
-  useTransition,
-} from "react";
+import { useRef, useEffect, useState, useTransition } from "react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Loader2Icon } from "lucide-react";
@@ -68,7 +63,6 @@ export function ChatView({ id }: Props) {
     startTransition(async () => {
       const { success, message } = await askQuestion(id, userQuestion);
       if (!success) {
-        // toast
         setMessages((prev) =>
           prev.slice(0, -1).concat([
             {
@@ -120,8 +114,7 @@ export function ChatView({ id }: Props) {
   }, [snapshot]);
 
   return (
-    <div className="flex flex-col h-full overflow-scroll">
-      {/* Chat content */}
+    <div className="flex flex-col h-full overflow-scroll ">
       <div className="flex-1 w-full ">
         {loading ? (
           <div className="flex items-center justify-center">
@@ -164,14 +157,14 @@ export function ChatView({ id }: Props) {
               <FormItem className="flex-1">
                 <FormControl>
                   <Input
-                    placeholder="Ask me anything about the document"
+                    placeholder="Ask me anything about the document, e.g. 'Summarize this document'"
                     {...field}
                   />
                 </FormControl>
               </FormItem>
             )}
           />
-          <Button type="submit" variant="secondary">
+          <Button type="submit" variant="secondary" className="text-md dark:text-white">
             {isPending ? (
               <Loader2Icon className="size-4 animate-spin" />
             ) : (
