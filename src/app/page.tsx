@@ -1,13 +1,13 @@
 import CssGridBackground from "@/components/css-grid-background";
 import FramerSpotlight from "@/components/framer-spotlight";
 import TypingPromptInput from "@/components/typing-prompt-input";
-import { Bot, Brain, ChevronDown, Play, Zap } from "lucide-react";
+import { Bot, Brain, ChevronDown, Zap } from "lucide-react";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import HeroButtons from "@/components/hero-buttons";
+import VideoPlayer from "@/components/video-player";
 
 export default function Home() {
-
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
@@ -56,29 +56,7 @@ export default function Home() {
             </div>
 
             <div className="max-w-4xl mx-auto">
-              <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-black">
-                <video
-                  className="w-full h-auto"
-                  controls
-                  preload="metadata"
-                  poster="/placeholder.svg?height=600&width=1000"
-                >
-                  <source src="/demo-video.mp4" type="video/mp4" />
-                  <track
-                    src="/captions.vtt"
-                    kind="subtitles"
-                    srcLang="en"
-                    label="English"
-                  />
-                  Your browser does not support the video tag.
-                </video>
-
-                <div className="absolute inset-0 flex items-center justify-center bg-black/20 opacity-0 hover:opacity-100 transition-opacity pointer-events-none">
-                  <div className="w-20 h-20 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                    <Play className="w-8 h-8 text-white ml-1" />
-                  </div>
-                </div>
-              </div>
+              <VideoPlayer />
 
               <div className="grid md:grid-cols-3 gap-6 mt-12">
                 <div className="text-center p-6 rounded-lg bg-background border">
