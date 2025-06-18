@@ -5,8 +5,8 @@ import { adminDb } from "../../firebaseAdmin";
 import { Message } from "@/components/chat-view";
 import { generateLangchainCompletion } from "@/lib/langchain";
 
-// const FREE_LIMIT = 3;
-// const PRO_LIMIT = 100;
+const PRO_LIMIT = 20;
+const FREE_LIMIT = 2;
 
 export const askQuestion = async (id: string, question: string) => {
   await auth.protect();
@@ -20,8 +20,30 @@ export const askQuestion = async (id: string, question: string) => {
     .doc(id)
     .collection("chat");
 
-  //   const chatSnapshot = await chatRef.get();
-  //   const userMessages = chatSnapshot.docs.filter((doc) => doc.data().role === "human")
+  const chatSnapshot = await chatRef.get();
+  const userMessages = chatSnapshot.docs.filter(
+    (doc) => doc.data().role === "human"
+  );
+
+  const userRef = await adminDb.collection("users").doc(userId!).get();
+
+  if (!userRef.data()?.isPro) {
+    if (userMessages.length >= FREE_LIMIT) {
+      return {
+        success: false,
+        message: "You have reached the free limit, upgrade to Pro",
+      };
+    }
+  }
+
+  if (userRef.data()?.isPro) {
+    if (userMessages.length >= PRO_LIMIT) {
+      return {
+        success: false,
+        message: `You've reached the PRO limit of ${PRO_LIMIT} questions per document`,
+      };
+    }
+  }
 
   const userMessage: Message = {
     role: "human",

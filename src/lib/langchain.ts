@@ -1,7 +1,7 @@
 import { ChatOpenAI } from "@langchain/openai";
 import { PDFLoader } from "@langchain/community/document_loaders/fs/pdf";
 import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
-// import { OpenAIEmbeddings } from "@langchain/openai";
+import { OpenAIEmbeddings } from "@langchain/openai";
 import { createStuffDocumentsChain } from "langchain/chains/combine_documents";
 import { ChatPromptTemplate } from "@langchain/core/prompts";
 import { createRetrievalChain } from "langchain/chains/retrieval";
@@ -9,20 +9,16 @@ import { createHistoryAwareRetriever } from "langchain/chains/history_aware_retr
 import { HumanMessage, AIMessage } from "@langchain/core/messages";
 import pineconeClient from "./pinecone";
 import { PineconeStore } from "@langchain/pinecone";
-// import { PineconeConflictError } from "@pinecone-database/pinecone/dist/errors";
 import { Index, RecordMetadata } from "@pinecone-database/pinecone";
 import { adminDb } from "../../firebaseAdmin";
 import { auth } from "@clerk/nextjs/server";
-// import { GoogleGenerativeAI } from "@google/generative-ai";
 import { GoogleGenerativeAIEmbeddings } from "@langchain/google-genai";
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
-// import { Embeddings } from "@langchain/core/embeddings";
 
 if (!process.env.GOOGLE_API_KEY) {
   throw new Error("Missing GOOGLE_API_KEY environment variable");
 }
 
-// const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY || "");
 export const googleAIModel = new ChatGoogleGenerativeAI({
   // model: "gemini-pro",
   model: "gemini-1.5-pro",
@@ -33,8 +29,8 @@ export const openAIModel = new ChatOpenAI({
   model: "gpt-4o-mini",
   apiKey: process.env.OPENAI_API_KEY,
 });
+export const indexName = "papafam";
 
-// Create a custom embeddings class that pads Gemini's vectors
 class PaddedGeminiEmbeddings extends GoogleGenerativeAIEmbeddings {
   constructor() {
     super({
@@ -66,8 +62,6 @@ class PaddedGeminiEmbeddings extends GoogleGenerativeAIEmbeddings {
     return paddedEmbedding;
   }
 }
-
-export const indexName = "papafam";
 
 const fetchMessagesFromDB = async (docId: string) => {
   const { userId } = await auth();
@@ -132,10 +126,9 @@ export const generateDocs = async (docId: string) => {
 
   console.log(`---Download URL fetched successfully: ${downloadUrl}---`);
 
-  // fetch pdf from specified url
   const response = await fetch(downloadUrl);
   const data = await response.blob();
-  const loader = new PDFLoader(data);
+  const loader = new PDFLoader(data, { splitPages: true });
   const docs = await loader.load();
 
   console.log("---Splitting docs into chunks---");
@@ -158,7 +151,8 @@ export const generateEmbeddingsInPinecone = async (docId: string) => {
   console.log("---Generating embeddings for docId---");
 
   const embeddings = new PaddedGeminiEmbeddings();
-  //   const embeddings = new OpenAIEmbeddings();
+  // const embeddings = new GoogleGenerativeAIEmbeddings()
+  // const embeddings = new OpenAIEmbeddings();
 
   const index = pineconeClient.Index(indexName);
   const namespaceAlreadyExists = await namespaceExists(index, docId);
@@ -169,24 +163,45 @@ export const generateEmbeddingsInPinecone = async (docId: string) => {
     );
     pineconeVectorStore = await PineconeStore.fromExistingIndex(embeddings, {
       namespace: docId,
-      pineconeIndex: index
+      pineconeIndex: index,
     });
     return pineconeVectorStore;
   } else {
-    const splitDocs = await generateDocs(docId);
-    console.log(
-      `---Storing embeddings in namespace ${docId} in the ${indexName} Pinecone vector store ---`
-    );
+    // const splitDocs = await generateDocs(docId);
+    // console.log(
+    //   `---Storing embeddings in namespace ${docId} in the ${indexName} Pinecone vector store ---`
+    // );
 
-    pineconeVectorStore = await PineconeStore.fromDocuments(
-      splitDocs,
-      embeddings,
-      { namespace: docId, pineconeIndex: index }
-    );
+    // pineconeVectorStore = await PineconeStore.fromDocuments(
+    //   splitDocs,
+    //   embeddings,
+    //   { namespace: docId, pineconeIndex: index }
+    // );
 
-    console.log("---Embeddings generated successfully---");
+    // console.log("---Embeddings generated successfully---");
 
-    return pineconeVectorStore;
+    // return pineconeVectorStore;
+    try {
+      const splitDocs = await generateDocs(docId);
+      pineconeVectorStore = await PineconeStore.fromDocuments(
+        splitDocs,
+        embeddings,
+        { namespace: docId, pineconeIndex: index }
+      );
+      console.log("---Embeddings generated and stored successfully---");
+
+      const stats = await index.describeIndexStats();
+      console.log(
+        `---Pinecone namespace stats after storage:`,
+        stats.namespaces?.[docId],
+        "---"
+      );
+
+      return pineconeVectorStore;
+    } catch (error) {
+      console.error("---Error storing embeddings in Pinecone:---", error);
+      throw error;
+    }
   }
 };
 

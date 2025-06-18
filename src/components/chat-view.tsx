@@ -14,6 +14,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { askQuestion } from "@/actions/ask-question";
 import { ChatMessage } from "./chat-message";
+import { toast } from "sonner";
 
 export type Message = {
   id?: string;
@@ -63,6 +64,22 @@ export function ChatView({ id }: Props) {
     startTransition(async () => {
       const { success, message } = await askQuestion(id, userQuestion);
       if (!success) {
+        toast.custom((t) => (
+          <div className="w-full max-w-md bg-red-600 text-destructive-foreground border border-destructive rounded-lg p-4 shadow-lg flex justify-between items-center">
+            <div>
+              <p className="font-semibold">Error</p>
+              <p className="text-sm opacity-80">{message}</p>
+            </div>
+            <Button
+              variant="link"
+              onClick={() => toast.dismiss(t)}
+              className="ml-4 text-sm underline text-white hover:text-white/80"
+            >
+              Close
+            </Button>
+          </div>
+        ));
+
         setMessages((prev) =>
           prev.slice(0, -1).concat([
             {
@@ -133,11 +150,8 @@ export function ChatView({ id }: Props) {
               />
             )}
 
-            {messages.map((message) => (
-              <ChatMessage
-                key={message.createdAt.getTime().toString()}
-                message={message}
-              />
+            {messages.map((message, idx) => (
+              <ChatMessage key={idx} message={message} />
             ))}
 
             <div ref={messagesEndRef} />
@@ -164,7 +178,11 @@ export function ChatView({ id }: Props) {
               </FormItem>
             )}
           />
-          <Button type="submit" variant="secondary" className="text-md dark:text-white">
+          <Button
+            type="submit"
+            variant="secondary"
+            className="text-md dark:text-primary hover:bg-black hover:text-white dark:hover:bg-secondary"
+          >
             {isPending ? (
               <Loader2Icon className="size-4 animate-spin" />
             ) : (

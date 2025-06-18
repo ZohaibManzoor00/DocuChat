@@ -14,9 +14,12 @@ import {
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { Progress } from "./ui/progress";
+import { useSubscription } from "@/hooks/useSubscription";
+import { toast } from "sonner";
 
 export function FileUploader() {
   const { progress, status, fileId, handleUpload } = useUpload();
+  const { isOverFileLimit, filesLoading} = useSubscription();
   const router = useRouter();
 
   useEffect(() => {
@@ -28,12 +31,15 @@ export function FileUploader() {
   const onDrop = useCallback(async (acceptedFiles: File[]) => {
     const file = acceptedFiles[0];
     if (file) {
-      await handleUpload(file);
+      if (!isOverFileLimit && !filesLoading) {
+        await handleUpload(file);
+      } else {
+        toast.error("You have reached the maximum number of files. Please upgrade to add more documents.");
+      }
     } else {
-      // do nothing
-      // toast
+      toast.error("Please upload a file");
     }
-  }, [handleUpload]);
+  }, [handleUpload, isOverFileLimit, filesLoading]);
 
   const { getRootProps, getInputProps, isFocused, isDragAccept, isDragActive } =
     useDropzone({
