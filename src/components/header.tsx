@@ -24,11 +24,11 @@ export function Header() {
           <div className="hidden md:flex">
             <ThemeSwitcher />
           </div>
-          <Button asChild variant="link" className="hidden md:flex text-md">
+          <Button size="sm" asChild variant="link" className="hidden md:flex text-md">
             <Link href="/dashboard/upgrade">Pricing</Link>
           </Button>
 
-          <Button asChild variant="link" className="text-md">
+          <Button size="sm" asChild variant="link" className="text-md">
             <Link href="/dashboard">My Documents</Link>
           </Button>
 
