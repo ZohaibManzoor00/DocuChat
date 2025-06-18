@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Bot, Zap } from "lucide-react";
+import { Zap } from "lucide-react";
 
 export default function HeroButtons() {
   const scrollToVideo = () => {
