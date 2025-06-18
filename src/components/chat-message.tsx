@@ -61,14 +61,14 @@ export function ChatMessage({ message }: Props) {
             <Markdown>{message.message}</Markdown>
           </div>
         )}
-        <span
+        {/* <span
           className={cn(
             "text-xs mt-1 self-end opacity-70",
             isHuman ? "text-muted-foreground" : "text-primary-foreground/70"
           )}
         >
           {message.createdAt.getTime()}
-        </span>
+        </span> */}
       </div>
     </div>
   );

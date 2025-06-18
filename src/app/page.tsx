@@ -1,13 +1,13 @@
-import { Button } from "@/components/ui/button";
 import CssGridBackground from "@/components/css-grid-background";
 import FramerSpotlight from "@/components/framer-spotlight";
 import TypingPromptInput from "@/components/typing-prompt-input";
-import { Brain, Zap } from "lucide-react";
+import { Bot, Brain, ChevronDown, Play, Zap } from "lucide-react";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
-import Link from "next/link";
+import HeroButtons from "@/components/hero-buttons";
 
 export default function Home() {
+
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
@@ -31,38 +31,91 @@ export default function Home() {
 
               <div className="flex items-center font-medium text-md text-primary max-w-3xl mb-12">
                 <p>
-                  Get AI insights on any pdf and conversate with a context aware
-                  AI that knows your pdf and your chat history
+                  Get trusted AI answers from any PDF - with context from your
+                  document and your chat history.
                 </p>
-                <Brain className="size-6 ml-1" />
+                <Bot className="size-4 ml-1" />
               </div>
               <TypingPromptInput />
 
-              <div className="flex flex-wrap justify-center gap-3 mt-16">
-                <Button
-                  asChild
-                  className="flex items-center px-5 py-6 h-[60px] bg-[#1a1d21] hover:bg-[#2a2d31] text-white rounded-xl border-0 dark:bg-primary dark:hover:bg-primary/90 dark:shadow-[0_0_15px_rgba(36,101,237,0.5)] relative overflow-hidden group"
+              <HeroButtons />
+            </div>
+          </div>
+        </section>
+
+        <section id="video-preview" className="py-10 pb-20 bg-muted/30">
+          <div className="px-4 md:px-6">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold tracking-tighter mb-4">
+                See How It Works
+              </h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Watch how easy it is to upload your PDF and start having
+                intelligent conversations with your documents
+              </p>
+            </div>
+
+            <div className="max-w-4xl mx-auto">
+              <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-black">
+                <video
+                  className="w-full h-auto"
+                  controls
+                  preload="metadata"
+                  poster="/placeholder.svg?height=600&width=1000"
                 >
-                  <Link href="/dashboard/upload">
-                    <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-primary/30 to-primary/0 dark:opacity-30 opacity-0 group-hover:opacity-100 transition-opacity duration-500 transform translate-x-[-100%] group-hover:translate-x-[100%]"></div>
-                    <Zap className="size-5.5 text-white relative z-10" />
-                    <div className="flex flex-col items-start relative z-10">
-                      <span className="text-[15px] font-medium">
-                        Upload PDF
-                      </span>
-                    </div>
-                  </Link>
-                </Button>
-                <Button
-                  asChild
-                  className="px-5 py-6 h-[60px] rounded-xl border-2 border-gray-300 dark:border-gray-600 bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800 text-[15px] font-medium text-foreground"
-                >
-                  <Link href="/dashboard">Sign Up</Link>
-                </Button>
+                  <source src="/demo-video.mp4" type="video/mp4" />
+                  <track
+                    src="/captions.vtt"
+                    kind="subtitles"
+                    srcLang="en"
+                    label="English"
+                  />
+                  Your browser does not support the video tag.
+                </video>
+
+                <div className="absolute inset-0 flex items-center justify-center bg-black/20 opacity-0 hover:opacity-100 transition-opacity pointer-events-none">
+                  <div className="w-20 h-20 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                    <Play className="w-8 h-8 text-white ml-1" />
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid md:grid-cols-3 gap-6 mt-12">
+                <div className="text-center p-6 rounded-lg bg-background border">
+                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
+                    <Brain className="w-6 h-6 text-primary" />
+                  </div>
+                  <h3 className="font-semibold mb-2">Smart Analysis</h3>
+                  <p className="text-sm text-muted-foreground">
+                    AI understands your document context and provides relevant
+                    insights
+                  </p>
+                </div>
+
+                <div className="text-center p-6 rounded-lg bg-background border">
+                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
+                    <Zap className="w-6 h-6 text-primary" />
+                  </div>
+                  <h3 className="font-semibold mb-2">Instant Responses</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Get immediate answers to questions about your PDF content
+                  </p>
+                </div>
+
+                <div className="text-center p-6 rounded-lg bg-background border">
+                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
+                    <ChevronDown className="w-6 h-6 text-primary" />
+                  </div>
+                  <h3 className="font-semibold mb-2">Easy Upload</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Simply drag and drop your PDF to start the conversation
+                  </p>
+                </div>
               </div>
             </div>
           </div>
         </section>
+
         <Footer />
       </main>
     </div>

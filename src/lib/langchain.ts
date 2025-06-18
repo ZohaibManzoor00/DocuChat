@@ -1,7 +1,6 @@
 import { ChatOpenAI } from "@langchain/openai";
 import { PDFLoader } from "@langchain/community/document_loaders/fs/pdf";
 import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
-import { OpenAIEmbeddings } from "@langchain/openai";
 import { createStuffDocumentsChain } from "langchain/chains/combine_documents";
 import { ChatPromptTemplate } from "@langchain/core/prompts";
 import { createRetrievalChain } from "langchain/chains/retrieval";
@@ -128,11 +127,15 @@ export const generateDocs = async (docId: string) => {
 
   const response = await fetch(downloadUrl);
   const data = await response.blob();
-  const loader = new PDFLoader(data, { splitPages: true });
+  const loader = new PDFLoader(data);
   const docs = await loader.load();
 
   console.log("---Splitting docs into chunks---");
-  const splitter = new RecursiveCharacterTextSplitter();
+  const splitter = new RecursiveCharacterTextSplitter({
+    chunkSize: 1000,
+    chunkOverlap: 200,
+    separators: ["\n\n", "\n", " ", ""],
+  });
   const splitDocs = await splitter.splitDocuments(docs);
   console.log(`---Splitting docs into chunks: ${splitDocs.length} chunks---`);
 
@@ -151,8 +154,6 @@ export const generateEmbeddingsInPinecone = async (docId: string) => {
   console.log("---Generating embeddings for docId---");
 
   const embeddings = new PaddedGeminiEmbeddings();
-  // const embeddings = new GoogleGenerativeAIEmbeddings()
-  // const embeddings = new OpenAIEmbeddings();
 
   const index = pineconeClient.Index(indexName);
   const namespaceAlreadyExists = await namespaceExists(index, docId);
@@ -167,41 +168,17 @@ export const generateEmbeddingsInPinecone = async (docId: string) => {
     });
     return pineconeVectorStore;
   } else {
-    // const splitDocs = await generateDocs(docId);
-    // console.log(
-    //   `---Storing embeddings in namespace ${docId} in the ${indexName} Pinecone vector store ---`
-    // );
+    const splitDocs = await generateDocs(docId);
+    pineconeVectorStore = await PineconeStore.fromDocuments(
+      splitDocs,
+      embeddings,
+      { namespace: docId, pineconeIndex: index }
+    );
+    console.log(
+      `--- Storing the embeddings in namespace ${docId} in the ${indexName} Pinecone vector store ---`
+    );
 
-    // pineconeVectorStore = await PineconeStore.fromDocuments(
-    //   splitDocs,
-    //   embeddings,
-    //   { namespace: docId, pineconeIndex: index }
-    // );
-
-    // console.log("---Embeddings generated successfully---");
-
-    // return pineconeVectorStore;
-    try {
-      const splitDocs = await generateDocs(docId);
-      pineconeVectorStore = await PineconeStore.fromDocuments(
-        splitDocs,
-        embeddings,
-        { namespace: docId, pineconeIndex: index }
-      );
-      console.log("---Embeddings generated and stored successfully---");
-
-      const stats = await index.describeIndexStats();
-      console.log(
-        `---Pinecone namespace stats after storage:`,
-        stats.namespaces?.[docId],
-        "---"
-      );
-
-      return pineconeVectorStore;
-    } catch (error) {
-      console.error("---Error storing embeddings in Pinecone:---", error);
-      throw error;
-    }
+    return pineconeVectorStore;
   }
 };
 
@@ -223,7 +200,10 @@ export const generateLangchainCompletion = async (
 
   console.log("---Creating a retriever...---");
 
-  const retriever = pineconeVectorStore.asRetriever();
+  const retriever = pineconeVectorStore.asRetriever({
+    k: 50,
+    searchType: "similarity",
+  });
 
   const chatHistory = await fetchMessagesFromDB(docId);
 
@@ -247,15 +227,6 @@ export const generateLangchainCompletion = async (
   });
 
   console.log("---Defining a prompt template for answering questions...---");
-
-  // const historyAwareRetrievalPrompt = ChatPromptTemplate.fromMessages([
-  //   ...chatHistory,
-  //   ["user", "{input}"],
-  //   [
-  //     "system",
-  //     "Answer the user's questions based on the below context:\n\n{context}",
-  //   ],
-  // ]);
 
   const historyAwareRetrievalPrompt = ChatPromptTemplate.fromMessages([
     [
@@ -286,6 +257,11 @@ export const generateLangchainCompletion = async (
   });
 
   console.log("---Reply generated successfully---");
+  console.log(
+    `---Retrieved ${
+      reply.context?.length || 0
+    } document chunks for this query---`
+  );
 
   return reply.answer;
 };
