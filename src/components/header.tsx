@@ -5,6 +5,7 @@ import { Button } from "./ui/button";
 import { Brain, FilePlus2, Zap } from "lucide-react";
 import { ThemeToggle } from "./theme-toggle";
 import { ThemeSwitcher } from "./theme-switcher";
+import UpgradeButton from "./upgrade-button";
 
 export function Header() {
   return (
@@ -14,11 +15,12 @@ export function Header() {
         className="text-lg md:text-xl flex items-center gap-2"
       >
         <Brain className="size-6" />
-        DocuChat <span className="text-primary hidden md:flex">Chat with your PDF</span>
+        DocuChat{" "}
+        <span className="text-primary hidden md:flex">Chat with your PDF</span>
       </Link>
 
       <SignedIn>
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center gap-2">
           <div className="hidden md:flex">
             <ThemeSwitcher />
           </div>
@@ -32,14 +34,14 @@ export function Header() {
 
           <Button asChild variant="outline" className="border-primary">
             <Link href="/dashboard/upload">
-            <p className="hidden md:flex">Upload</p>
+              <p className="hidden md:flex">Upload</p>
               <FilePlus2 className="text-primary" />
             </Link>
           </Button>
 
-          <div className="pl-2">
-            <UserButton />
-          </div>
+          <div className="ml-1"/>
+          <UpgradeButton />
+          <UserButton />
         </div>
       </SignedIn>
 

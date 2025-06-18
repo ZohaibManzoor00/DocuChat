@@ -50,7 +50,7 @@ export default function HeroSpotlight() {
           background: `
             radial-gradient(800px circle at 20% 30%, rgba(120, 120, 255, 0.1), transparent 40%),
             radial-gradient(600px circle at 80% 60%, rgba(100, 150, 255, 0.1), transparent 40%)
-          `,
+        `,
         }}
       />
 

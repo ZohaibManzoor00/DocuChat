@@ -19,7 +19,7 @@ export async function DocumentsList() {
     .get();
 
   return (
-    <>
+    <div className="max-w-7xl mx-auto pt-3 pb-20">
       <h1 className="text-3xl p-5 font-extralight">My Documents (<strong>{documentSnapshot.docs.length}</strong>)</h1>
       <div className="flex flex-wrap p-5 justify-center lg:justify-start gap-5 rounded-sm max-w-7xl mx-auto">
         <PlaceholderDocument />
@@ -36,6 +36,6 @@ export async function DocumentsList() {
           );
         })}
       </div>
-    </>
+    </div>
   );
 }

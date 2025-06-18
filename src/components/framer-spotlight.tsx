@@ -100,7 +100,7 @@ export default function FramerSpotlight() {
         heroRef.current.removeEventListener("mouseleave", handleMouseLeave)
       }
     }
-  }, [isMouseInHero]) // Only depend on isMouseInHero
+  }, [isMouseInHero, updateDefaultPosition, handleMouseMove, handleMouseLeave]) // Only depend on isMouseInHero
 
   if (!isMounted) {
     return null
